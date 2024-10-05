@@ -13,10 +13,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CountryServiceTest {
@@ -49,16 +53,50 @@ class CountryServiceTest {
                 .name("Italia")
                 .build();
 
+        countriesDtos1 = new ArrayList<>();
+        countriesDtos2 = new ArrayList<>();
+
         this.countriesDtos1.add(countryDTO1);
         this.countriesDtos2.add(countryDTO2);
     }
 
     @Test
-    void getAllCountries() {
+    void getAllCountriesTest() {
+
+        List<Map<String, Object>> listasApiExterna = List.of(
+                Map.of("name", Map.of("common", "Argentina"), "population", 1, "area", 10000, "region", "Sudamerica", "cca3", "ARG"),
+                Map.of("name", Map.of("common", "Italia"), "population", 1, "area", 5000, "region", "Europa", "cca3", "ITA")
+        );
+
+        when(restTemplate.getForObject(anyString(), eq(List.class))).thenReturn(listasApiExterna);
+
+        List<Country> result = countryService.getAllCountries();
+
+        assertEquals(2, result.size());
+        assertEquals("Argentina", result.get(0).getName());
+        assertEquals("Italia", result.get(1).getName());
     }
 
     @Test
     void getAllPaisesDto() {
+
+        Country country1 = Country.builder()
+                .code("ARG")
+                .name("Argentina")
+                .build();
+
+        Country country2 = Country.builder()
+                .code("URU")
+                .name("Uruguay")
+                .build();
+
+        List<Country> countries = new ArrayList<>();
+        countries.add(country1);
+
+
+        when(this.countryService.getAllCountries()).thenReturn(countries);
+        List<CountryDTO> result = this.countryService.getAllPaisesDto(null, null);
+        assertEquals(2, result.size());
     }
 
     @Test
