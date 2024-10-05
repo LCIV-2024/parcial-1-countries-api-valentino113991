@@ -195,33 +195,33 @@ class CountryServiceTest {
         assertEquals("Italia", result.get(0).getName());
     }
 
-//    @Test
-//    void postPaises() {
-//        List<Map<String, Object>> listasApiExterna = List.of(
-//                Map.of("name", Map.of("common", "Argentina"), "population", 1, "area", 10000, "region", "America", "cca3", "ARG"),
-//                Map.of("name", Map.of("common", "Italia"), "population", 1, "area", 5000, "region", "Europa", "cca3", "ITA")
-//        );
-//
-//        Country country1 = Country.builder()
-//                .code("ARG")
-//                .name("Argentina")
-//                .build();
-//
-//        Country country2 = Country.builder()
-//                .code("ITA")
-//                .name("Italia")
-//                .build();
-//
-//        List<Country> countries = new ArrayList<>();
-//        countries.add(country1);
-//        countries.add(country2);
-//
-//        when(restTemplate.getForObject(anyString(), eq(List.class))).thenReturn(listasApiExterna);
-//        List<CountryEntity> entites = new ArrayList<>();
-//        when(this.countryRepository.findAll()).thenReturn(entites);
-//        AmountBody amountBody = new AmountBody();
-//        amountBody.setAmountOfCountryToSave(2);
-//        List<CountryDTO> result = this.countryService.postPaises(amountBody);
-//        assertEquals(2, result.size());
-//    }
+    @Test
+    void postPaises() {
+        List<Map<String, Object>> listasApiExterna = List.of(
+                Map.of("name", Map.of("common", "Argentina"), "population", 1, "area", 10000, "region", "America", "cca3", "ARG"),
+                Map.of("name", Map.of("common", "Italia"), "population", 1, "area", 5000, "region", "Europa", "cca3", "ITA")
+        );
+
+        Country country1 = Country.builder()
+                .code("ARG")
+                .name("Argentina")
+                .build();
+
+        Country country2 = Country.builder()
+                .code("ITA")
+                .name("Italia")
+                .build();
+
+        List<Country> countries = new ArrayList<>();
+        countries.add(country1);
+        countries.add(country2);
+
+        when(restTemplate.getForObject(anyString(), eq(List.class))).thenReturn(listasApiExterna);
+        List<CountryEntity> entites = new ArrayList<>();
+        when(this.countryRepository.saveAll(any())).thenReturn(entites);
+        AmountBody amountBody = new AmountBody();
+        amountBody.setAmountOfCountryToSave(2);
+        List<CountryDTO> result = this.countryService.postPaises(amountBody);
+        assertEquals(2, result.size());
+    }
 }
