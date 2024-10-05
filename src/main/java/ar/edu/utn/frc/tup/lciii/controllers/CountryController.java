@@ -25,11 +25,6 @@ public class CountryController {
         return ResponseEntity.ok(this.countryService.getPaisesByContinente(continent));
     }
 
-    @GetMapping("/api/countries/{language}/language")
-    public ResponseEntity<?> getPaisesByLenguaje(@PathVariable String language){
-        return ResponseEntity.ok(this.countryService.getPaisesByLenguaje(language));
-    }
-
     @PostMapping("/api/countries")
     public ResponseEntity<?> postPaises(@RequestBody AmountBody amountBody){
         return ResponseEntity.ok(this.countryService.postPaises(amountBody));
