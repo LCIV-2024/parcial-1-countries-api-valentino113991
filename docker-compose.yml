@@ -1,0 +1,7 @@
+services:
+  lciii-scaffolding:
+    container_name: paises_app
+    image: pais:1.0.0
+    build: .
+    ports:
+      - 8080:8080
